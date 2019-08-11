@@ -1,0 +1,14 @@
+1.新建一个github项目：
+登录github---new repo---进入本地对应的文件夹（本地文件夹与github_repo对应)---git init---git add 文件名---
+git commit -m '提交信息'---git remote add origin github地址（本地与远程关联）---git push -u origin master
+2.克隆一个github项目：
+进入本地文件夹--git clone github地址
+3.向远程提交更新：
+git add 文件名---git commit -m '提交信息'---git push
+4.从远程更新本地内容：
+git pull
+
+tips:
+个人理解：
+与远程关联好后，关联信息不会变（不动.git的文件），移动本地文件夹，修改本地文件夹名后都可以用git add 文件名---git commit -m '提交信息'---git push
+来提交本地更新

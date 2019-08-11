@@ -1,0 +1,45 @@
+1.产品提了一个需求，在demo3中创建了一个文件test.txt,里面内容是“第一天需求完成。
+2.git add test.txt 添加到暂存区
+3.git commit -m 'first commit' 提交到版本库
+4.快下班了，产品说要增加一个功能，修改了test.txt，里面内容变成 “第一天需求完成，还有增加功能”，但这时候没有自测，添加
+到暂存区，然后下班。
+5.git add test.txt
+6.第二天上班了，产品说昨天增加的功能不要了
+7.git reset HEAD test.txt,这个时候工作区的内容还没有修改     “第一天需求完成，还有增加功能”
+这里这条命令表示吧暂存区的修改撤销，重新放回工作区，暂存区干净了
+8.git checkout -- test.txt 执行完这条命令工作区的内容回到了“第一天需求完成”
+将test.txt在工作区的修改撤销，如果工作区的内容没有添加到暂存区，执行完后工作区的内容跟版本库相同
+如果工作区的内容是在添加到暂存区后再修改过了，执行完后工作区的内容跟暂存区相同，参考廖雪峰
+9.第二天继续code ,修改test.txt，工作区的内容变成了  “第一天需求完成 第二天需求完成”
+10.git add test.txt
+11.git commit -m 'second commit'
+12.产品说第二天的需求不要了，要求回滚到第一天，即“第一天需求完成 第二天需求完成”=》“第一天需求完成”
+13.git log,查看commit 号，复制first commit的commit号
+14.git reset --hard commit号，工作区，版本库和暂存区都回到first commit
+15.产品说不要这个文件了，删除test.txt
+16.git rm test.txt ,这个时候本地清空了，但是仓库（版本库）没有清空
+17.git commit -m 'delete test' 执行完这条命令工作区，暂存区，仓库都清空了
+
+补充：
+1.git checkout HEAD <file> 会将暂存区和工作区的内容替换为版本库（HEAD指针指向的内容）内容，十分危险，基本上
+用不到
+2git rm --cached将暂存区文件删除，工作区文件还在
+3.git rm会同时删除工作区和暂存区中的指定文件，
+4.还未执行commit时想恢复删除的文件，直接使用git checkout HEAD [file] 就能还原
+   执行git commit 提交到HEAD后才想恢复删除文件，执行git reset --hard HEAD^ 回退版本
+
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD <file>，就回到了场景1，第二步按场景1操作
+或者一步完成（git checkout HEAD file）
+
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+版本回退（如果你回退版本后又后悔了，想恢复最后那个版本怎么办，通过git reset --hard commit_id命令可以搞定）
+本地分支版本回退的方法：
+1.git reflog取得版本号，2.git reset --hard 版本号
+自己的远程分支(origin/dev)版本回退方法：
+1.回退本地分支（1.git reflog2.git reset --hard 版本号）2.git push -f(本地分支回滚后，版本将落后远程分支，必须使用强制推送覆盖远程分支，否则无法推送到远程分支)
+公共远程分支（origin/master）版本回退方法
+https://blog.csdn.net/fuchaosz/article/details/52170105
